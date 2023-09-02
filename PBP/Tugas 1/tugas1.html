@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Form Peminjaman Buku</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- SUDAH PALING FIX KAH? NJIHHH :( -->
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="text-center py-3">Form Peminjaman Buku Saya</h1>
+        <form 
+            id="form-peminjaman"
+        >
+            <div class="form-group row">
+                <label class="col-form-label col-md-2" for="nama">Nama :</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="nama" name="nama" required>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-form-label col-md-2" for="id-perpus">ID Perpustakaan :</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="id-perpus" name="id-perpus" required>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-form-label col-md-2" for="judul">Judul Buku :</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="judul" name="judul" required>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-form-label col-md-2" for="penulis">Penulis Buku :</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="penulis" name="penulis" required>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-form-label col-md-2" for="kode-buku">Kode Buku :</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="kode-buku" name="kode-buku" required>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-form-label col-md-2" for="kategori">Kategori :</label>
+                <div class="col-md-10">
+                    <select class="form-control" id="kategori" name="kategori">
+                        <option value="" disabled selected>Pilih Kategori</option>
+                        <option value="fiksi">Fiksi</option>
+                        <option value="non-fiksi">Non-Fiksi</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row" id="sub-kategori-container">
+                <label class="col-form-label col-md-2" for="sub-kategori">Sub Kategori :</label>
+                <div class="col-md-10">
+                    <select class="form-control" id="sub-kategori" name="sub-kategori">
+                        <option value="" disabled selected>Pilih Sub Kategori</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-form-label col-md-2" for="lama-pinjam">Lama Peminjaman (hari) :</label>
+                <div class="col-md-10">
+                    <input type="number" class="form-control" id="lama-pinjam" name="lama-pinjam" min="3" max="7"
+                        required>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-2"></div>
+                <div class="col-md-10">
+                    <button type="submit" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Submit</button>
+                    <button type="reset" class="btn btn-danger">Reset</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div id="modal-peminjaman" class="modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Terima Kasih</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="modal-text"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        document.getElementById("form-peminjaman").addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            var kategori = document.getElementById("kategori").value;
+            var subKategori = document.getElementById("sub-kategori").value;
+
+            if (kategori === "" || subKategori === "") {
+                alert("Silakan pilih kategori dan sub kategori yang valid.");
+            } else {
+                var nama = document.getElementById("nama").value;
+                var idPerpus = document.getElementById("id-perpus").value;
+                var judul = document.getElementById("judul").value;
+                var penulis = document.getElementById("penulis").value;
+                var kodeBuku = document.getElementById("kode-buku").value;
+                var tanggalPinjam = new Date().toISOString().split('T')[0];
+                var lamaPinjam = parseInt(document.getElementById("lama-pinjam").value);
+                var tanggalKembali = new Date();
+                tanggalKembali.setDate(tanggalKembali.getDate() + lamaPinjam);
+
+                var modal = document.getElementById("modal-peminjaman");
+                modal.style.display = "block";
+
+                var modalText = document.getElementById("modal-text");
+                modalText.innerHTML = nama +
+                    " telah meminjam buku dengan ID Perpustakaan '" +
+                    idPerpus + "', berjudul '" + judul + "', ditulis oleh '" + penulis +
+                    "', dengan kode buku '" +
+                    kodeBuku + "', kategori '" + kategori + "', sub kategori '" + subKategori +
+                    "', pada tanggal " +
+                    tanggalPinjam + " selama " + lamaPinjam + " hari. Tanggal pengembalian: " + formatDate(
+                        tanggalKembali);
+
+                var span = document.getElementsByClassName("close")[0];
+                span.onclick = function () {
+                    modal.style.display = "none";
+                }
+
+                window.onclick = function (event) {
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                    }
+                }
+            }
+        });
+
+        function formatDate(date) {
+            var day = date.getDate();
+            var month = date.getMonth() + 1;
+            var year = date.getFullYear();
+            return year + "-" + (month < 10 ? "0" : "") + month + "-" + (day < 10 ? "0" : "") + day;
+        }
+
+
+        document.getElementById("kategori").addEventListener("change", function () {
+            var kategoriValue = this.value;
+            var subKategoriSelect = document.getElementById("sub-kategori");
+
+            // Clear previous options
+            subKategoriSelect.innerHTML = "";
+
+            // Add new options based on selected category
+            if (kategoriValue === "fiksi") {
+                var fiksiOptions = ["Pilih Sub Kategori", "Cerpen", "Novel", "Komik"];
+
+                fiksiOptions.forEach(function (optionValue) {
+                    var optionElement = document.createElement("option");
+                    optionElement.value = optionValue.toLowerCase();
+                    if (optionValue == 'Pilih Sub Kategori'){
+                        optionElement.disabled = true
+                        optionElement.selected = true
+                    }
+                    optionElement.text = optionValue;
+
+                    subKategoriSelect.appendChild(optionElement);
+                });
+
+            } else if (kategoriValue === "non-fiksi") {
+                var nonFiksiOptions = ["Pilih Sub Kategori", "Biografi", "Referensi", "Motivasi"];
+
+                nonFiksiOptions.forEach(function (optionValue) {
+                    var optionElement = document.createElement("option");
+                    optionElement.value = optionValue.toLowerCase();
+                    if (optionValue == 'Pilih Sub Kategori'){
+                        optionElement.disabled = true
+                        optionElement.selected = true
+                    }
+                    optionElement.text = optionValue;
+
+                    subKategoriSelect.appendChild(optionElement);
+                });
+            }
+        });
+
+        document.getElementById("reset-button").addEventListener("click", function () {
+            document.getElementById("form-peminjaman").reset();
+        });
+    </script>
+</body>
+
+</html>
