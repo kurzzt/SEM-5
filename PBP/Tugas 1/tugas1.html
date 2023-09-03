@@ -9,9 +9,14 @@
 
 <body>
     <div class="container">
-        <h1 class="text-center py-3">Form Peminjaman Buku Saya</h1>
+        <h1 class="text-center py-3">Form Peminjaman Buku Unchdip</h1>
+        <div class="d-flex justify-content-center align-center py-3">
+            <img src="macan.jpeg" alt="" class="img-thumbnail rounded">
+        </div>
+
         <form 
             id="form-peminjaman"
+            class=""
         >
             <div class="form-group row">
                 <label class="col-form-label col-md-2" for="nama">Nama :</label>
@@ -130,14 +135,16 @@
                 modal.style.display = "block";
 
                 var modalText = document.getElementById("modal-text");
-                modalText.innerHTML = nama +
-                    " telah meminjam buku dengan ID Perpustakaan '" +
-                    idPerpus + "', berjudul '" + judul + "', ditulis oleh '" + penulis +
-                    "', dengan kode buku '" +
-                    kodeBuku + "', kategori '" + kategori + "', sub kategori '" + subKategori +
-                    "', pada tanggal " +
-                    tanggalPinjam + " selama " + lamaPinjam + " hari. Tanggal pengembalian: " + formatDate(
-                        tanggalKembali);
+                modalText.innerHTML = "Terima kasih telah meminjam buku di perpustakaan kami" +
+                    "<br/> Harap kembalikan buku pada tanggal " + formatDate(tanggalKembali);
+                    // nama +
+                    // " telah meminjam buku dengan ID Perpustakaan '" +
+                    // idPerpus + "', berjudul '" + judul + "', ditulis oleh '" + penulis +
+                    // "', dengan kode buku '" +
+                    // kodeBuku + "', kategori '" + kategori + "', sub kategori '" + subKategori +
+                    // "', pada tanggal " +
+                    // tanggalPinjam + " selama " + lamaPinjam + " hari. Tanggal pengembalian: " + formatDate(
+                    //     tanggalKembali);
 
                 var span = document.getElementsByClassName("close")[0];
                 span.onclick = function () {
@@ -200,8 +207,19 @@
             }
         });
 
-        document.getElementById("reset-button").addEventListener("click", function () {
-            document.getElementById("form-peminjaman").reset();
+        // document.getElementById("reset-button").addEventListener("click", function () {
+        //     document.getElementById("form-peminjaman").reset();
+        // });
+
+        document.querySelector("button[type='reset']").addEventListener("click", function () {
+            // Clear the sub-kategori select options, except for the "Pilih Sub Kategori" option
+            var subKategoriSelect = document.getElementById("sub-kategori");
+            var subKategoriOptions = subKategoriSelect.options;
+            for (var i = subKategoriOptions.length - 1; i > 0; i--) {
+                subKategoriSelect.remove(i);
+            }
+            // Set "Pilih Sub Kategori" as the selected option
+            subKategoriSelect.selectedIndex = 0;
         });
     </script>
 </body>
