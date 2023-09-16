@@ -150,7 +150,7 @@
                 </div>
                 <!-- Button Submit dan Reset -->
                 <button type="submit" class="btn btn-primary" name="submit" value="submit">Submit</button>
-                <button type="reset" class="btn btn-danger" onclick="resetform()">Reset</button>
+                <button type="reset" class="btn btn-danger" onclick="">Reset</button>
             </form>
             <br>
             <?php
