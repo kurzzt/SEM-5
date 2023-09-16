@@ -83,7 +83,7 @@
                 </div>
                 <div class="form-group">
                     <label for="kota">Kota/ Kabupaten:</label>
-                    <select id="kota" name="kota" class="form-control">
+                    <select id="kota" name="kota" class="form-select">
                         <option value="Semarang">Semarang</option>
                         <option value="Jakarta">Jakarta</option>
                         <option value="Bandung">Bandung</option>
