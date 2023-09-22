@@ -1,110 +1,104 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-        <title>Form Customer</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
-        <style>
-            .error{
-                color: red;
-            }
-        </style>
-    </head>
-    <body>
-                    <?php
-                    //include our login information
-                    require_once("db_login.php");
-                    $id = $_GET['id'];
+<?php
 
-                    //mengecek apakah user belum menekan tombol submit
-                    if(!isset($_POST["submit"])){
-                        $query = "SELECT * FROM customers WHERE customerid=".$id."";
-                        //execute the query
-                        $result = $db->query($query);
-                        if(!$result){
-                            die("Could not query the database: <br/>".$db->error);
-                        }else{
-                            while($row = $result->fetch_object()){
-                                $name = $row->name;
-                                $address = $row->address;
-                                $city = $row->city;
-                            }
-                        }
-                    }else{
-                        $valid = TRUE;
-                        $name = test_input($_POST['name']);
-                        if($name == ''){
-                            $error_name = "Name is required";
-                            $valid = FALSE;
-                        }elseif(!preg_match("/^[a-zA-Z ]*$/",$name)){
-                            $error_name = "Only letters and white space allowed";
-                            $valid = FALSE;
-                        }
+// TODO 1: Lakukan koneksi dengan database
+session_start();
+if (!isset($_SESSION['username'])) {
+   header('location: login.php');
+}
 
-                        $address = test_input($_POST['address']);
-                        if($address == ''){
-                            $error_address = "address is required";
-                            $valid = FALSE;
-                        }
+require_once("lib/db_login.php");
+ 
+// TODO 2: Buat variabel $id yang diambil dari query string parameter
+$id = $_GET['id'];
 
-                        $city = $_POST['city'];
-                        if($city == '' || $city == 'none'){
-                            $error_city = "city is required";
-                            $valid = FALSE;
-                        }
-                        
-                        if($valid){
-                            //Asign a query
-                            $address = $db->real_escape_string($address);
-                            $query = "UPDATE customers SET name='".$name."', address='".$address."', city='".$city."' WHERE customerid=".$id." ";
-                            //Execute the query
-                            $result = $db->query($query);
-                            if(!$result){
-                                die("Could not query the database: <br/>".$db->error.'<br>Query:'.$query);
-                            }else{
-                                $db->close();
-                                header('Location: view_customer.php');
-                            }
-                        }
-                    }
-                    ?>
-                    <br>
-                    <div class="card m-5">
-                        <div class="card-header">Edit Customers Data</div>
-                        <div class="card-body">
-                            <form method="POST" autocomplete="on" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]).'?id='.$id;?>">
-                                <!-- Nama -->
-                                <div class="form-group">
-                                    <label for="name">Nama:</label>
-                                    <input type="text" class="form-control" id="name" name="name" value="<?php echo $name;?>">
-                                    <div class="error"><?php if (isset($error_name)) {echo $error_name;}?></div>
-                                </div>
-                                <br>
-                                <!-- Address -->
-                                <div class="form-group">
-                                    <label for="address">Address:</label>
-                                    <textarea class="form-control" id="address" name="address" rows="5"><?php echo $address;?></textarea>
-                                    <div class="error"><?php if (isset($error_address)) {echo $error_address;}?></div>
-                                </div>
-                                <br>
-                                <!-- City -->
-                                <div class="form-group">
-                                    <label for="city">city:</label>
-                                    <select name="city" id="city" class="form-control" required>
-                                        <option value="none"<?php if(!isset($city)) echo 'selected=true';?>>--Select a city--</option>
-                                        <option value="Airport West"<?php if(isset($city) && $city=="Airport West") echo 'selected=true';?>>Airport West</option>
-                                        <option value="Box Hill"<?php if(isset($city) && $city=="Box Hill") echo 'selected=true';?>>Box Hill</option>
-                                        <option value="Yarraville"<?php if(isset($city) && $city=="Yarraville") echo 'selected=true';?>>Yarraville</option>
-                                    </select>
-                                <div class="error"><?php if(isset($error_city)) echo $error_city;?></div>
-                                </div>
-                                <br>
-                                <button type="submit" class="btn btn-primary" name="submit" value="submit">Submit</button>
-                                <a href="view_customer.php"  class="btn btn-secondary">Cancel</a>
-                            </form>
-                            </div>
-                            </div>                
-                <?php $db->close(); ?>
-                </body>
-                </html>
+// Memeriksa apakah user belum menekan tombol submit
+if(!isset($_POST["submit"])){
+    $query = "SELECT * FROM customers WHERE customerid=".$id."";
+    $result = $db->query($query);
+    if(!$result){
+        die("Could not query the database: <br/>".$db->error);
+    }else{
+        while($row = $result->fetch_object()){
+            $name = $row->name;
+            $address = $row->address;
+            $city = $row->city;
+        }
+    }
+}else{
+    $valid = TRUE;
+    $name = test_input($_POST['name']);
+    if($name == ''){
+        $error_name = "Name is required";
+        $valid = FALSE;
+    }elseif(!preg_match("/^[a-zA-Z ]*$/",$name)){
+        $error_name = "Only letters and white space allowed";
+        $valid = FALSE;
+    }
+
+    $address = test_input($_POST['address']);
+    if($address == ''){
+        $error_address = "address is required";
+        $valid = FALSE;
+    }
+
+    $city = $_POST['city'];
+    if($city == '' || $city == 'none'){
+        $error_city = "city is required";
+        $valid = FALSE;
+    }
+    
+    // TODO 3: Tulislah dan eksekusi query untuk mengambil informasi customer berdasarkan id
+    if($valid){
+        $address = $db->real_escape_string($address);
+        
+        // TODO 4: Jika valid, update data pada database dengan mengeksekusi query yang sesuai
+        $query = "UPDATE customers SET name='".$name."', address='".$address."', city='".$city."' WHERE customerid=".$id." ";
+        $result = $db->query($query);
+        if(!$result){
+            die("Could not query the database: <br/>".$db->error.'<br>Query:'.$query);
+        }else{
+            $db->close();
+            header('Location: view_customer.php');
+        }
+    }
+}
+
+
+        
+?>
+<?php include('./header.php') ?>
+<br>
+<div class="card mt-4">
+    <div class="card-header">Edit Customers Data</div>
+    <div class="card-body">
+        <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']) . '?id=' . $id ?>" method="POST" autocomplete="on">
+            <div class="form-group">
+                <label for="name">Nama:</label>
+                <input type="text" class="form-control" id="name" name="name" value="<?= $name; ?>">
+                <div class="error"><?php if (isset($error_name)) echo $error_name ?></div>
+            </div>
+            <div class="form-group">
+                <label for="name">Address:</label>
+                <textarea class="form-control" name="address" id="address" rows="5"><?php echo $address; ?></textarea>
+                <div class="error"><?php if (isset($error_address)) echo $error_address ?></div>
+            </div>
+            <div class="form-group">
+                <label for="city">City:</label>
+                <select name="city" id="city" class="form-control" required>
+                    <option value="none" <?php if (!isset($city)) echo 'selected' ?>>--Select a city--</option>
+                    <option value="Airport West" <?php if (isset($city) && $city == "Airport West") echo 'selected' ?>>Airport West</option>
+                    <option value="Box Hill" <?php if (isset($city) && $city == "Box Hill") echo 'selected' ?>>Box Hill</option>
+                    <option value="Yarraville" <?php if (isset($city) && $city == "Yarraville") echo 'selected' ?>>Yarraville</option>
+                </select>
+                <div class="error"><?php if (isset($error_city)) echo $error_city ?></div>
+            </div>
+            <br>
+            <button type="submit" class="btn btn-primary" name="submit" value="submit">Submit</button>
+            <a href="view_customer.php" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
+<?php include('./footer.php') ?>
+<?php
+$db->close();
+?>
