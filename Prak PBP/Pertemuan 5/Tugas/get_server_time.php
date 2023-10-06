@@ -1,4 +1,4 @@
 <?php
-    //menampilkan waktu server
+    // TODO 1: Tuliskan response berupa waktu server saat ini
     echo date('H:i:s');
 ?>
