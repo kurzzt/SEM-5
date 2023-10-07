@@ -12,7 +12,6 @@ function get_server_time() {
     var page = 'get_server_time.php';
     xmlhttp.open("GET", page, true);
     xmlhttp.onreadystatechange = function () {
-        // document.getElementById('showtime').innerHTML = '<img src="../images/ajax_loader.png" />';
         if ((xmlhttp.readyState == 4) && (xmlhttp.status == 200)) {
             document.getElementById('showtime').innerHTML = xmlhttp.responseText;
         }
@@ -36,7 +35,6 @@ function add_customer_get() {
         xmlhttp.open('GET', url, true);
 
         xmlhttp.onreadystatechange = function () {
-            document.getElementById(inner).innerHTML = '<img src="images/ajax_loader.png"/>';
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                 document.getElementById(inner).innerHTML = xmlhttp.responseText;
             }
@@ -65,7 +63,6 @@ function add_customer_post() {
         xmlhttp.open('POST', url, true);
         xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
         xmlhttp.onreadystatechange = function () {
-            // document.getElementById(inner).innerHTML = '<img src="images/ajax_loader.png"/>';
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                 document.getElementById(inner).innerHTML = xmlhttp.responseText;
             }
@@ -82,7 +79,6 @@ function callAjax() {
     var xmlhttp = getXMLHTTPRequest();
     xmlhttp.open('GET', url, true);
     xmlhttp.onreadystatechange = function () {
-        // document.getElementById(inner).innerHTML = '<img src="images/ajax_loader.png"/>';
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
             document.getElementById(inner).innerHTML = xmlhttp.responseText;
         }
@@ -103,7 +99,7 @@ function showCustomer(customerid) {
 }
 
 function showBook(title) {
-    // TODO 5: Lengkapilah fungsi showCustomer()
+    // TODO 5: Lengkapilah fungsi showBook()
     var inner = 'detail_book';
     var url = 'get_book.php?id=' + title;
     if (title == '') {

@@ -1,7 +1,7 @@
 <!--File		: show_books.php
 	Deskripsi	: menampilkan data buku
 -->
-<?php include('header.html')?>
+<?php include('./header.php')?>
 <br>
 <div class="container">
     <div class="card">
@@ -18,5 +18,5 @@
         </div>
     </div>
 </div>
-<?php include('footer.html')?>
+<?php include('./footer.php')?>
 <script src="ajax.js"></script>
